@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../static/scripts.js" defer></script>
+    <title>Mitos atau Fakta</title>
+</head>
+<body class="w-[100vw] h-[100vh] flex justify-center items-center">
+    <div class="py-16 px-4">
+        <div class="lg:col-span-2 my-10 mx-auto text-center">
+            <h1 class="md:text-3xl sm:text-2xl text-xl font-bold py-2">
+                Berikan Pernyataan Seputar <br /> 
+                Kesehatan Mata!
+            </h1>
+            <p class="text-lg">Mitos atau Fakta?</p>
+        </div>
+        <div class="max-w-[600px] mx-auto my-8 md:my-6 lg:my-2">
+            <form class="flex flex-col sm:flex-row items-center justify-center" id="faktos">
+                <input
+                id="kalimat"
+                class="p-3 flex w-full rounded-md text-black border-solid border-2 border-black"
+                type="text"
+                name="kalimat"
+                placeholder="Makan terlalu banyak bisa bikin minus?"
+                />
+                <button
+                class="bg-[#00df9a] text-black rounded-md font-medium w-[200px] ml-4 my-6 px-6 py-3"
+                type="submit"
+                >
+                Cari Tahu
+                </button>
+            </form>
+            <div class="max-w-[500px] mx-auto text-center">
+                <p>Jawabannya adalah</p>
+                <div id="spinner" class="mt-4 mx-auto hidden">
+                    <img src="../assets/spinner.gif" alt="Loading..." class="mx-auto w-[100px] h-auto">
+                </div>
+                <div id="hasil" class="mt-4 text-center text-lg"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
