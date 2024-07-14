@@ -7,17 +7,32 @@
     <script src="../static/scripts.js" defer></script>
     <title>Mitos atau Fakta</title>
 </head>
-<body class="w-[100vw] h-[100vh] flex justify-center items-center">
-    <div class="py-16 px-4">
+<body class="flex flex-col justify-center items-center bg-[#f2f2f2] overflow-x-hidden">
+    <nav class="bg-white shadow-lg w-[100%]">
+        <div class="flex justify-between px-4 h-16 w-[100%]">
+            <div class="shrink-0 flex items-center">
+                <a href="/" class="text-2xl font-bold text-gray-800">Fakta Mitos Kesehatan Mata</a>
+            </div>
+            <div class="hidden md:flex md:ml-10 md:space-x-8 items-center">
+                <a href="/" class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                <a href="/readme" class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Read Me</a>
+            </div>
+        </div>
+    </nav>
+    <div class="py-16 px-4 w-[100vw] ">
         <div class="lg:col-span-2 my-10 mx-auto text-center">
             <h1 class="md:text-3xl sm:text-2xl text-xl font-bold py-2">
-                Berikan Pernyataan Seputar <br /> 
+                Berikan Pernyataan / Pertayaan Seputar <br /> 
                 Kesehatan Mata!
             </h1>
-            <p class="text-lg">Mitos atau Fakta?</p>
+            <p class="text-md mt-3">
+                Apakah sudah membaca Read Me?
+                <br>Jika belum silahkan klik tombol di pojok kanan atas atau klik <a href="/readme" class="underline">disini</a>
+            </p>
         </div>
-        <div class="max-w-[600px] mx-auto my-8 md:my-6 lg:my-2">
-            <form class="flex flex-col sm:flex-row items-center justify-center" id="faktos">
+        <div class="max-w-[600px] mx-auto my-8 md:my-6 lg:my-2 ">
+            <b class="text-sm">Jawaban dibuat 100% oleh AI. <br>Mohon kebijakan pengguna dalam menerima informasi!</b>
+            <form class="flex flex-col sm:flex-row items-center justify-center mb-5" id="faktos">
                 <input
                 id="kalimat"
                 class="p-3 flex w-full rounded-md text-black border-solid border-2 border-black"
@@ -26,7 +41,7 @@
                 placeholder="Makan terlalu banyak bisa bikin minus?"
                 />
                 <button
-                class="bg-[#00df9a] text-black rounded-md font-medium w-[200px] ml-4 my-6 px-6 py-3"
+                class="bg-[#00df9a] text-black rounded-md font-medium w-[200px] ml-4 px-6 py-3"
                 type="submit"
                 >
                 Cari Tahu
@@ -38,6 +53,7 @@
                     <img src="../assets/spinner.gif" alt="Loading..." class="mx-auto w-[100px] h-auto">
                 </div>
                 <div id="hasil" class="mt-4 text-center text-lg"></div>
+                <div id="konfiden" class="mt-2 text-center text-lg"></div>
             </div>
         </div>
     </div>

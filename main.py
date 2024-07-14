@@ -11,21 +11,27 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 import os
 
-def classify_input_with_similarity(input_text, fact_store, myth_store, qa_fakta, qa_mitos, threshold=0.6):
+def classify_input_with_similarity(input_text, fact_store, myth_store, qa_fakta, qa_mitos, threshold=0.45):
     input_text = input_text.lower()
     
     fakta_score = fact_store.similarity_search_with_relevance_scores(input_text, k=1)[0][1]
     mitos_score = myth_store.similarity_search_with_relevance_scores(input_text, k=1)[0][1]
 
     if max(fakta_score, mitos_score) < threshold:
-        return "Out of Topic"
+        return {"kalimat" : f"Out of Topic", 
+                "konfiden" : f"-"}
 
     if fakta_score > mitos_score:
         ans_fakta = qa_fakta.run(input_text)
-        return f"Fakta\n{ans_fakta}"
+        print("hasil", ans_fakta)
+        print("kskf")
+        return {"kalimat" : f"Fakta\n{ans_fakta}", 
+                "konfiden" : f"{fakta_score*100:.2f}"}
     else:
         ans_mitos = qa_mitos.run(input_text)
-        return f"Mitos\n{ans_mitos}"
+        print(ans_mitos)
+        return {"kalimat" : f"Mitos\n{ans_mitos}",
+                "konfiden" : f"{mitos_score*100:.2f}"}
 
 load_dotenv()
 
@@ -54,7 +60,7 @@ mitos_docs[0].page_content = mitos_docs[0].page_content.lower()
 fakta = splitter.split_documents(fakta_docs)
 mitos = splitter.split_documents(mitos_docs)
 
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 db_fakta = FAISS.from_documents(fakta, embeddings)
 db_mitos = FAISS.from_documents(mitos, embeddings)
 
@@ -66,7 +72,13 @@ qa_mitos = RetrievalQA.from_chain_type(llm=llm, retriever=db_mitos.as_retriever(
 async def get_form(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/readme")
+async def read(request: Request):
+    return templates.TemplateResponse("readme.html", {"request": request})
+
 @app.post("/check_faktos")
 async def check_number(kalimat: str = Form(...)):
-    klasifikasi = classify_input_with_similarity(kalimat, db_fakta, db_mitos, qa_fakta, qa_mitos)
-    return JSONResponse(content={"kalimat": klasifikasi})
+    hasil = classify_input_with_similarity(kalimat, db_fakta, db_mitos, qa_fakta, qa_mitos)
+    kalimat_akhir = hasil['kalimat']
+    konfiden = hasil['konfiden']
+    return JSONResponse(content={"kalimat": kalimat_akhir, "konfiden": konfiden})
