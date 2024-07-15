@@ -24,4 +24,38 @@ bermain dan mencoba! Selain itu, mohon bertanya saja langsung kepada Dokter yang
 
 # Cara Install
 
-`git clone https://github.com/hfzdzakii/fakta-mitos-kesehatan-mata.git`
+1. Clone repository ini dengan menggunakan code dibawah di dalam CMD / Terminal:
+
+   `git clone https://github.com/hfzdzakii/fakta-mitos-kesehatan-mata.git`
+
+2. Masuk ke dalam folder:
+
+   `cd fakta-mitos-kesehatan-mata`
+   
+4. Install semua library yang dibutuhkan:
+
+   `pip install -r requirements.txt`
+   
+6. Copy file .env.example, ubah nama menjadi .env
+
+   Jika Anda menggunakan Windows, gunakan *command* berikut:
+   
+   `copy .env.example .env`
+
+   Jika Anda menggunakan Linux / MacOs:
+
+   `cp .env.example .env`
+  
+8. Isi GOOGLE_API_KEY sesuai API Key yang dibuat di [sini](https://console.cloud.google.com/apis/credentials), lali klik **Create Credentials -> Api Key**
+
+    Jika Anda menggunakan Windows bisa dilakukan dengan manual, masuk ke text editor, copy dan paste API Key
+
+    Jika Anda menggunakan Linux, gunakan command berikut:
+
+    `nano .env`
+
+    Lalu **paste API Key -> Ctrl+X -> X -> Enter**
+
+9. Jalankan projek dengan command berikut:
+
+    `uvicorn main:app --reload`
