@@ -7,6 +7,8 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains import RetrievalQA
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain.vectorstores import FAISS
+from langchain.prompts import ChatPromptTemplate
+from langchain.chains import LLMChain
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
@@ -23,15 +25,17 @@ def classify_input_with_similarity(input_text, fact_store, myth_store, qa_fakta,
 
     if fakta_score > mitos_score:
         ans_fakta = qa_fakta.run(input_text)
-        print("hasil", ans_fakta)
-        print("kskf")
-        return {"kalimat" : f"Fakta\n{ans_fakta}", 
+        return {"kalimat" : f"{ans_fakta}", 
                 "konfiden" : f"{fakta_score*100:.2f}"}
     else:
         ans_mitos = qa_mitos.run(input_text)
-        print(ans_mitos)
-        return {"kalimat" : f"Mitos\n{ans_mitos}",
+        return {"kalimat" : f"{ans_mitos}",
                 "konfiden" : f"{mitos_score*100:.2f}"}
+
+def chain_prompt(kalimat, llm, prompt):
+    chain = LLMChain(llm=llm, prompt=prompt)
+    hasil = chain.run(kalimat)
+    return hasil
 
 load_dotenv()
 
@@ -65,8 +69,17 @@ db_fakta = FAISS.from_documents(fakta, embeddings)
 db_mitos = FAISS.from_documents(mitos, embeddings)
 
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
-qa_fakta = RetrievalQA.from_chain_type(llm=llm, retriever=db_fakta.as_retriever())
-qa_mitos = RetrievalQA.from_chain_type(llm=llm, retriever=db_mitos.as_retriever())
+
+prompt_template = ChatPromptTemplate.from_template(
+    """Kamu adalah seorang ahli dalam bidang kesehatan mata. Jika kamu tidak mengetahui jawaban dari pertanyaan atau jika teks yang tersedia tidak memberikan informasi yang cukup, cukup jawablah dengan kalimat yang menyatakan ketidaktahuan mu. Jangan pernah membuat informasi sendiri yang tidak ada dalam teks. Jangan pernah menyebut kata teks untuk merujuk pada dokumen yang diberi kepada kamu.
+    Berikut kalimatnya: {question}
+    Konteks: {context}
+    Jawaban:
+    """
+)
+
+qa_fakta = RetrievalQA.from_llm(llm=llm, retriever=db_fakta.as_retriever(), prompt=prompt_template)
+qa_mitos = RetrievalQA.from_llm(llm=llm, retriever=db_mitos.as_retriever(), prompt=prompt_template)
 
 @app.get("/")
 async def get_form(request: Request):
@@ -79,6 +92,7 @@ async def read(request: Request):
 @app.post("/check_faktos")
 async def check_number(kalimat: str = Form(...)):
     hasil = classify_input_with_similarity(kalimat, db_fakta, db_mitos, qa_fakta, qa_mitos)
+    # kalimat_akhir = chain_prompt(hasil['kalimat'], llm, prompt_template)
     kalimat_akhir = hasil['kalimat']
     konfiden = hasil['konfiden']
     return JSONResponse(content={"kalimat": kalimat_akhir, "konfiden": konfiden})

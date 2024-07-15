@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
             const result = await response.json()
             console.log(result)
-            hasil.innerText = `Hasil adalah ${result.kalimat}`
+            hasil.innerText = `${result.kalimat}`
             konfiden.innerText = `Tingkat konfiden AI : ${result.konfiden}%`
         } catch (error) {
             hasil.innerText = "Ada kesalahan server. Coba lagi kembali."
