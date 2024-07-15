@@ -54,7 +54,7 @@ bermain dan mencoba! Selain itu, mohon bertanya saja langsung kepada Dokter yang
 
     `nano .env`
 
-    Lalu **paste API Key -> Ctrl+X -> X -> Enter**
+    Lalu **paste API Key -> Ctrl+V -> X -> Enter**
 
 9. Jalankan projek dengan command berikut:
 
