@@ -9,5 +9,4 @@ faiss-cpu
 python-dotenv
 google-generative-ai
 google-ai-generativelanguage
-"langchain[docarray]"
 docarray
