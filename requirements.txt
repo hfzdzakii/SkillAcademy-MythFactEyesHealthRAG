@@ -1,3 +1,8 @@
+tensorflow[and-cuda]
+pytz
+pandas
+numpy
+python-multipart
 fastapi
 jinja2
 uvicorn
@@ -5,8 +10,10 @@ langchain
 langchain-core
 langchain-community
 langchain-google-genai
-faiss-cpu
+langchain-chroma
 python-dotenv
 google-generativeai
 google-ai-generativelanguage
 docarray
+ipywidgets
+jupyter

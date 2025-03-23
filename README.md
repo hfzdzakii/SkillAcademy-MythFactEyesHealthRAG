@@ -19,21 +19,22 @@ bermain dan mencoba! Selain itu, mohon bertanya saja langsung kepada Dokter yang
 # Syarat Install
 
 1. Python versi 3.9.x atau diatasnya.
-2. Virtual Environtment, misal miniconda (opsional)
-3. Git
+2. WSL Ubuntu dengan CUDA Accelerator
+3. Virtual Environtment di WSL, misal miniconda (opsional)
+4. Git
 
 # Cara Install
 
 1. Clone repository ini dengan menggunakan code dibawah di dalam CMD / Terminal:
 
    ```
-   git clone https://github.com/hfzdzakii/fakta-mitos-kesehatan-mata.git
+   git clone https://github.com/hfzdzakii/SkillAcademy-MythFactEyesHealthRAG.git
    ```
 
 3. Masuk ke dalam folder:
 
    ```
-   cd fakta-mitos-kesehatan-mata
+   cd SkillAcademy-MythFactEyesHealthRAG
    ```
    
 5. Install semua library yang dibutuhkan:
