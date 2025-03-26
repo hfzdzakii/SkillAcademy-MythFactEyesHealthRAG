@@ -11,6 +11,7 @@ langchain-core
 langchain-community
 langchain-google-genai
 langchain-chroma
+faiss-cpu
 python-dotenv
 google-generativeai
 google-ai-generativelanguage
