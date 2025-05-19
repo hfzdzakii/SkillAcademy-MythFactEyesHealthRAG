@@ -42,10 +42,6 @@ def load_and_split_documents(file_path):
     )
     return splitter.split_documents(document)
 
-def load_system_prompt(file_path="./data/model_policy.txt"):
-    with open(file_path, "r") as f:
-        return f.read().strip().replace("\n", " ")
-
 def setup_vector_store(documents):
     embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
     return Chroma.from_documents(
@@ -62,7 +58,7 @@ def load_vector_store():
     )
     
 def create_prompt_template():
-    system_template = load_system_prompt()
+    system_template = open("./data/model_policy.txt", "r").read().strip().replace("\n", " ")
     human_tempplate = """"Use the following context to answer the question!
         Context: {context}
         Question: {question}
@@ -103,6 +99,7 @@ async def lifespan(app: FastAPI):
         prompt=app.state.PROMPT,
         llm=app.state.LLM
     )
+    app.state.A = 1
     yield
     del app.state.DB
     del app.state.RETRIEVER
@@ -135,9 +132,9 @@ async def read(request: Request):
 async def check_number(question: str = Form(...)):
     result = app.state.CHAIN.invoke(question)
     confidence = app.state.DB.similarity_search_with_relevance_scores(question)[0][1] * 100
-    return JSONResponse(content={"result": result, "confidence": round(confidence, 2)})
+    return JSONResponse(content={"result": result})
 
-@app.get("/setup-data")
+@app.get("/set-data")
 async def setup_vector_store_endpoint():
     docs = load_and_split_documents("./data/data.txt")
     app.state.DB = setup_vector_store(docs)
@@ -152,7 +149,7 @@ async def setup_vector_store_endpoint():
     )
     return RedirectResponse(url='/', status_code=303)
 
-@app.get("/setup-policy")
+@app.get("/set-policy")
 async def setup_policy_endpoint():
     app.state.PROMPT = create_prompt_template()
     app.state.CHAIN = setup_chain(
@@ -160,9 +157,16 @@ async def setup_policy_endpoint():
         prompt=app.state.PROMPT,
         llm=app.state.LLM
     )
+    app.state.A += 1
     return RedirectResponse(url='/', status_code=303)
 
-@app.get("/debug-policy")
-async def debug_policy_endpoint(request: Request):
-    dic = {key : str(value) for key, value in request.app.state._state.items() }
-    return JSONResponse(content=dic)
+@app.get("/debug-state")
+async def debug_state_endpoint():
+    return JSONResponse(content={
+        "State DB": str(app.state.DB),
+        "State RETRIEVER": str(app.state.RETRIEVER),
+        "State LLM": str(app.state.LLM),
+        "State PROMPT": str(app.state.PROMPT),
+        "State CHAIN": str(app.state.CHAIN),
+        "State A": app.state.A
+    })
