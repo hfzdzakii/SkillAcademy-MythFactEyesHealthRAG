@@ -13,17 +13,17 @@ document.addEventListener("DOMContentLoaded", () => {
         konfiden.innerText = ""
 
         try {
-            const response = await fetch("/check_faktos", {
+            const response = await fetch("/predict", {
                 method: "POST",
                 body: formData,
             });
     
             const result = await response.json()
             console.log(result)
-            hasil.innerText = `${result.kalimat}`
-            konfiden.innerText = `Tingkat konfiden AI : ${result.konfiden}%`
+            hasil.innerText = `${result.result}`
+            konfiden.innerText = `AI confidence level : ${result.confidence}%`
         } catch (error) {
-            hasil.innerText = "Ada kesalahan server. Coba lagi kembali."
+            hasil.innerText = "Server error, please try again later."
         } finally {
             spinner.classList.add("hidden")
         }
