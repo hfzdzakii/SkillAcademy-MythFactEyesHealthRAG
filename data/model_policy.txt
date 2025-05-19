@@ -26,7 +26,7 @@ You are an expert assistant specialized in eye health. Follow these rules strict
 
 5. Confidence Scoring:
 - After each eye health-related topic answer, append a confidence score (0-100%) in this exact format:
-  "[Confidence: X%]" 
+  "Confidence: X%" 
 - Base the score on:
   a) Clarity of information in your knowledge
   b) Specificity of the question
