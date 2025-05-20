@@ -19,6 +19,7 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+assert GOOGLE_API_KEY, "GOOGLE_API_KEY environment variable must be set"
 
 def load_and_split_documents(file_path):
     loader = TextLoader(file_path)

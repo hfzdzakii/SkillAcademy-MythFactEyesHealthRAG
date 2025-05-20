@@ -1,76 +1,73 @@
-Nama : Muhammad Hafizh Dzaki
+# Skill Academy Final Project - Myth Fact Eyes Health
 
-# Fakta Mitos Kesehatan Mata
+- Created by : Muhammad Hafizh Dzaki
+- Last Edited On : May 2025
 
-Projek ini dibuat untuk memenuhi syarat kelulusan dalam Bootcamp - Artificial Intelligence Skill Academy Pro, Ruang Guru.
-Website Fakta Mitos Kesehatan Mata adalah website berbasis AI yang digunakan untuk mengecek semua hal terkait kesehatan
-mata. Namun, ada beberapa **disclaimer** yang wajib diperhatikan!
+This project was created to fulfill the completion of **Artificial Intelligence** course in **Skill Academy Pro** Bootcamp by **Ruangguru**. The Eye Health Facts & Myths website is an AI-based platform designed to check everything related to eye health. This is Langchain-based project using RAG (Retrieval-Augmented Generation) technique. However, there are some **important disclaimers** you should be aware of!
 
-# Disclaimer
+## Disclaimer
 
-1. Pencipta berlatar belakang IT, bukanlah Kesehatan atau Kedokteran.
-2. Pencipta tidak memiliki seorang yang benar-benar ahli untuk memverifikasi seluruh informasi terkait kesehatan mata.
-3. Pencipta menggunakan dataset yang dibuat pribadi yang di-*generate* menggunakan tools AI populer seperti OpenAI ChatGPT 3.5 dan Google Gemini.
-4. Validasi kebenaran data menggunakan tools AI dengan syarat kedua tools memiliki 1 suara, baik itu mitos atau fakta.
+1. Non-Medical Background – The creator has an IT background, not a medical or healthcare degree
 
-Oleh karena itu, ada kemungkinan AI **memberikan jawaban yang tidak relevan**. Sehingga, mohon **kebijakan pengguna** dalam 
-bermain dan mencoba! Selain itu, mohon bertanya saja langsung kepada Dokter yang ahli apabila memiliki masalah dalam penglihatan Anda.
+2. No Expert Verification – There is no certified eye health specialist validating the accuracy of the information provided for AI model
 
-# Syarat Install
+3. AI-Generated Dataset – The data is sourced from a privately created dataset, generated using popular AI tools like OpenAI ChatGPT and Google Gemini
 
-1. Python versi 3.9.x atau diatasnya.
-2. WSL Ubuntu dengan CUDA Accelerator
-3. Virtual Environtment di WSL, misal miniconda (opsional)
-4. Git
+4. AI-Based Validation – Information is only included if both AI tools agree on the conclusion
 
-# Cara Install
+As a result, the AI may sometimes provide **irrelevant** or **inaccurate answers**. Please use this tool wisely and at your own discretion. For any vision-related concerns, we strongly recommend consulting a **qualified eye doctor directly**.
 
-1. Clone repository ini dengan menggunakan code dibawah di dalam CMD / Terminal:
+## How to Run
 
-   ```
-   git clone https://github.com/hfzdzakii/SkillAcademy-MythFactEyesHealthRAG.git
-   ```
+### Run From Repository
 
-3. Masuk ke dalam folder:
+**Prerequisite** : Python Environment Management (Conda or Miniconda preferable)
 
-   ```
-   cd SkillAcademy-MythFactEyesHealthRAG
-   ```
-   
-5. Install semua library yang dibutuhkan:
+```
+$ conda create --name MyEnv "python<3.13"
+$ coda activate MyEnv
+```
 
-   ```
-   pip install -r requirements.txt
-   ```
-   
-7. Copy file .env.example, ubah nama menjadi .env
+After that follow these steps below :
 
-   Jika Anda menggunakan Windows, gunakan *command* berikut:
-   
-   ```
-   copy .env.example .env
-   ```
+```
+$ git clone https://github.com/hfzdzakii/SkillAcademy-MythFactEyesHealthRAG.git
+$ cd SkillAcademy-MythFactEyesHealthRAG
+$ pip install -r requirements.txt
+```
 
-   Jika Anda menggunakan Linux / MacOs:
+Copy `.env.example` file , rename into `.env`. Then, Fill in the GOOGLE_API_KEY field with your API key, which you can create [here](https://console.cloud.google.com/apis/credentials). To generate a new key, click **Create Credentials > API Key**.
 
-   ```
-   cp .env.example .env
-   ```
-  
-9. Isi GOOGLE_API_KEY sesuai API Key yang dibuat di [sini](https://console.cloud.google.com/apis/credentials), lali klik **Create Credentials -> Api Key**
+To run the project, enter command :
 
-    Jika Anda menggunakan Windows bisa dilakukan dengan manual, masuk ke text editor, copy dan paste API Key
+```
+$ uvicorn main:app --reload
+```
 
-    Jika Anda menggunakan Linux, gunakan command berikut:
+### Run Using Docker
 
-    ```
-    nano .env
-    ```
+**Prerequisite** : Docker CLI or Docker Desktop and GOOGLE_API_KEY field with your API key, which you can create [here](https://console.cloud.google.com/apis/credentials). To generate a new key, click **Create Credentials > API Key**.
 
-    Lalu **paste API Key -> Ctrl+V -> X -> Enter**
+```
+$ docker pull hfzdzakii/myth-fact-eyes-health:latest
+$ docker run -d -p 8000:8000 -e GOOGLE_API_KEY="<your api key>" --name rag hfzdzakii/myth-fact-eyes-health:latest
+```
 
-10. Jalankan projek dengan command berikut:
+Open your web browser and go to url :
 
-    ```
-    uvicorn main:app --reload
-    ```
+```
+localhost:8000
+```
+
+## Understanding Folder 
+
+1. assets : An asset for front-end website
+2. chroma_db : Vector store to store embedded text data from document
+3. data : Consist of `data.txt` to provide context for LLM model and `model_policy.txt` to strict LLM model for following specified rules
+4. static : A javascript file so the website can hit API
+5. templates : A couple HTML files for frond-end view
+
+## Understanding Files
+
+1. create.ipynb : An ipynb file preserves as a note for creating RAG
+2. main.py : A Python file containing a FastAPI script serves as an API endpoint
